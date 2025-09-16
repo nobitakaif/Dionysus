@@ -19,3 +19,12 @@ model User{
     imageURL            String?
     credits             Int         @default(150)
 }
+
+model Project{
+    id                  String      @id() @default(uuid())
+    createdAt           String
+    updatedAt           String
+    name                String
+    githubUrl           String
+    deletedAT           DateTime?
+}

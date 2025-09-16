@@ -71,7 +71,7 @@ export default function AppSidebar(){
                     <SidebarMenu>
                         {items.map(item =>{
                             return (
-                                <SidebarMenuItem key={item.title}>
+                                <SidebarMenuItem key={item.title + Math.random()}>
                                     <SidebarMenuButton asChild>
                                         <Link href={item.url} className={cn({
                                             '!bg-primary !text-white' : pathname == item.url
@@ -95,7 +95,7 @@ export default function AppSidebar(){
                     <SidebarMenu>
                         {project.map(pro =>{
                             return (
-                                <SidebarMenuItem key={pro.name}>
+                                <SidebarMenuItem key={pro.name + Math.random()}>
                                     <SidebarMenuButton asChild>
                                         <div>
                                             <div className={cn('rounded-sm border size-6 flex items-center justify-center text-sm text-primary',{
@@ -110,7 +110,7 @@ export default function AppSidebar(){
                             )
                         })}
                         <div className="h-2"></div>
-                        <SidebarMenuItem>
+                        {open &&    <SidebarMenuItem>
                             <Link href={"/create"}>
                                 <Button variant={"outline"}  className="w-fit">
                                     <Plus/>
@@ -118,6 +118,8 @@ export default function AppSidebar(){
                                 </Button>
                             </Link>
                         </SidebarMenuItem>
+                        }
+                        
                     </SidebarMenu>
                 </SidebarGroupContent>
             </SidebarGroup>
