@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 import { useAuth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -82,8 +83,8 @@ export const createTRPCRouter = t.router;
  */
 
 const isAuthenticated = t.middleware(async ({ctx,next})=>{
-  const user = useAuth()
-  if(!user){
+  const user = auth()
+  if(!(await user).userId){
     throw new TRPCError({
       code : "UNAUTHORIZED",
       message : "You need to be log-in to access!"
