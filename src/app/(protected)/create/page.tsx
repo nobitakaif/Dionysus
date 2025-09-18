@@ -1,8 +1,10 @@
 
 "use client"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { Button } from "~/components/ui/button"
 import { Input } from "~/components/ui/input"
+import { api } from "~/trpc/react"
 
 type FormInput={
     repoUrl : string
@@ -12,8 +14,22 @@ type FormInput={
 
 export default function Create(){
     const { register, handleSubmit, reset} = useForm<FormInput>()
+    const createProject = api.project.createProject.useMutation() // this mutation function call backend function 
     function onSubmit(data : FormInput){
         alert(data)
+        createProject.mutate({
+            githubUrl : data.repoUrl,
+            name : data.projectName,
+            githubToken : data.githubToken
+        },{
+            onSuccess : ()=>{
+                toast.success("project created successfully ")
+                reset()
+            },
+            onError : ()=>{
+                toast.error("Failed to create project")
+            }
+        })
         return true 
     }
     return <div className="h-full w-full flex items-center justify-center flex-col">
@@ -30,7 +46,7 @@ export default function Create(){
                 <Input {...register('githubToken')}
                 placeholder="Github token for private repo (optional)"
                 />
-                <Button className="cursor-pointer" type="submit">Create project</Button>
+                <Button className="cursor-pointer" type="submit" disabled={createProject.isPending}>Create project</Button>
             </form>
         </div>
     </div>
