@@ -1,9 +1,27 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import z from "zod";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const projectRouter = createTRPCRouter({
-    createProject : protectedProcedure.input().mutation(async ({ctx,input})=>{ // 
-        ctx.user.userId // get the userid
-        console.log("user Clicked ")
-        return true
+    createProject : protectedProcedure.input(
+        z.object({
+            name : z.string(),
+            githubUrl : z.string(),
+            githubToken : z.string().optional()
+        })
+    ).mutation(async ({ctx,input})=>{ // 
+        const project = await ctx.db.project.create({
+            data:{
+                githubUrl : input.githubUrl,
+                name : input.name,
+                userToProject : {
+                    create : {
+                        user : {
+                            connect : {id : (await ctx.user).userId!}
+                        }
+                    }
+                }
+            }
+        })
+        return project
     })
 })
