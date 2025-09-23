@@ -83,8 +83,8 @@ export const createTRPCRouter = t.router;
  */
 
 const isAuthenticated = t.middleware(async ({ctx,next})=>{
-  const user = auth()
-  if(!(await user).userId){
+  const user = await auth()
+  if( !user.userId){
     throw new TRPCError({
       code : "UNAUTHORIZED",
       message : "You need to be log-in to access!"

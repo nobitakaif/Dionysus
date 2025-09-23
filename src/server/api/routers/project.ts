@@ -15,13 +15,24 @@ export const projectRouter = createTRPCRouter({
                 name : input.name,
                 userToProject : {
                     create : {
-                        user : {
-                            connect : {id : (await ctx.user).userId!}
-                        }
+                        userId :ctx.user.userId
                     }
                 }
             }
         })
         return project
+    }),
+    getProject : protectedProcedure.query(async({ctx,input})=>{ // get all the project of the user 
+        return await ctx.db.project.findMany({
+            where: {
+                userToProject:{
+                    some : {
+                        userId : ctx.user.userId
+                    }
+                },
+                deletedAT : null // give the project which deletedAt has not be null
+            }
+        })
     })
+
 })
