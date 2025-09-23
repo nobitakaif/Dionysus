@@ -16,7 +16,6 @@ export default function Create(){
     const { register, handleSubmit, reset} = useForm<FormInput>()
     const createProject = api.project.createProject.useMutation() // this mutation function call backend function 
     function onSubmit(data : FormInput){
-        alert(data)
         createProject.mutate({
             githubUrl : data.repoUrl,
             name : data.projectName,
