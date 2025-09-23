@@ -18,7 +18,7 @@ model User{
     upatedAt            DateTime    @updatedAt
     imageURL            String?
     credits             Int         @default(150)
-    userToProject       UserToProject[]
+    // userToProject       UserToProject[]
 }
 
 model Project{
@@ -28,7 +28,7 @@ model Project{
     name                String
     githubUrl           String
     deletedAT           DateTime?
-    userToProject       UserToProject[]
+    // userToProject       UserToProject[]
 }
 
 model UserToProject{
@@ -37,7 +37,7 @@ model UserToProject{
     updatedAt       DateTime    @default(now())
     userId          String
     projectId       String
-    user            User @relation(fields: [userId],references: [id])
-    project         Project @relation(fields: [projectId],references: [id])
+    // user            User @relation(fields: [userId],references: [id])
+    // project         Project @relation(fields: [projectId],references: [id])
     @@unique([userId, projectId])   
 }
