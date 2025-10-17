@@ -121,4 +121,4 @@ export const filterUnprocessedCommits = async(projecId : string, commitHashes : 
 //     return unProcessedCommits
 // }
 
-await pollCommit('614f365d-f0e5-4970-a359-c2878e7570f6').then(console.log)
+// await pollCommit('614f365d-f0e5-4970-a359-c2878e7570f6').then(console.log)

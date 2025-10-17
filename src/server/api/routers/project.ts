@@ -14,6 +14,7 @@ export const projectRouter = createTRPCRouter({
             data:{
                 githubUrl : input.githubUrl,
                 name : input.name,
+                userId  : ctx.user.userId,
                 userToProject : {
                     create : {
                         userId :ctx.user.userId
@@ -33,6 +34,15 @@ export const projectRouter = createTRPCRouter({
                     }
                 },
                 deletedAT : null // give the project which deletedAt has not be null
+            }
+        })
+    }),
+    getCommit : protectedProcedure.input(z.object({
+        projecId : z.string()
+    })).query( async ({ctx, input})=>{
+        return await ctx.db.commits.findMany({
+            where:{
+                projectId : input.projecId
             }
         })
     })

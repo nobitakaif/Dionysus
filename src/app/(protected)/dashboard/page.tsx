@@ -1,8 +1,10 @@
 "use client"
-import { useUser } from "@clerk/nextjs"
 import { ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
+import CommitLog from "~/app/_components/commit-log"
 import useProject from "~/hooks/use-project"
+// import CommitLog from "./commit-log"
+
 
 
 export default function Page(){
@@ -33,5 +35,7 @@ export default function Page(){
                 ArchiveButton
             </div>
         </div>
+        <div className="mt-8"></div>
+        <CommitLog/>
     </div>
 }
