@@ -9,7 +9,8 @@ export default function Page(){
 
     const {project} = useProject()
     return <div>
-        <div className="flex items-center justify-center flex-wrap gap-y-4">
+        {project?.id}
+        <div className="flex items-center justify-between flex-wrap gap-y-4">
             <div className="w-fit rounded-md bg-primary px-4 py-3">
                 <div className="flex items-center">
                     <Github className="size-5 text-white"/> 
@@ -24,6 +25,13 @@ export default function Page(){
                 </div>
             </div>
 
+            <div className="h-4"></div>
+
+            <div className="flex items-center gap-4">
+                TeamMemeber
+                InviteButton
+                ArchiveButton
+            </div>
         </div>
     </div>
 }
