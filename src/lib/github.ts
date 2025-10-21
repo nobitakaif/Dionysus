@@ -54,7 +54,7 @@ export const pollCommit = async(projectId : string) =>{
 
     const commit = await db.commits.createMany({
         data : summarise.map((summary, index)=>{
-            console.log("proccessed index is " , index)
+            console.log("proccessed index is ", unProcessedCommits[index]?.commitAuthorAvatar)
             return {
                 projectId : projectId,
                 commitHash : unProcessedCommits[index]!.commitHash,
@@ -121,4 +121,4 @@ export const filterUnprocessedCommits = async(projecId : string, commitHashes : 
 //     return unProcessedCommits
 // }
 
-// await pollCommit('614f365d-f0e5-4970-a359-c2878e7570f6').then(console.log)
+await pollCommit('614f365d-f0e5-4970-a359-c2878e7570f6').then(console.log)

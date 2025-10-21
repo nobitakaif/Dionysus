@@ -47,11 +47,19 @@ export const projectRouter = createTRPCRouter({
         projecId : z.string()
     })).query( async ({ctx, input})=>{
         console.log(input.projecId)
-        return await ctx.db.commits.findMany({
+        
+        const response = await ctx.db.commits.findMany({
             where:{
                 projectId : input.projecId
             }
         })
+        // await ctx.db.commits.create({
+        //     data :{
+        //         commitAuthorAvatar : "",
+
+        //     }
+        // })
+        return response
     }),
     getUserId : protectedProcedure.query(async ({ctx,input})=>{
         const userId =await ctx.db.user.findFirst({
