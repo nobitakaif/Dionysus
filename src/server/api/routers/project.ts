@@ -10,14 +10,20 @@ export const projectRouter = createTRPCRouter({
             githubToken : z.string().optional()
         })
     ).mutation(async ({ctx,input})=>{ // 
+        const userId = await ctx.db.user.findFirst({
+            where:{
+                email : ctx.userId.email
+            }
+        })
+
+        console.log("inside create project", userId)
         const project = await ctx.db.project.create({
             data:{
                 githubUrl : input.githubUrl,
                 name : input.name,
-                userId  : ctx.user.userId,
                 userToProject : {
                     create : {
-                        userId :ctx.user.userId
+                        userId : userId?.id!
                     }
                 }
             }
@@ -30,7 +36,7 @@ export const projectRouter = createTRPCRouter({
             where: {
                 userToProject:{
                     some : {
-                        userId : ctx.user.userId
+                        userId : ctx.userId.id
                     }
                 },
                 deletedAT : null // give the project which deletedAt has not be null
@@ -40,11 +46,21 @@ export const projectRouter = createTRPCRouter({
     getCommit : protectedProcedure.input(z.object({
         projecId : z.string()
     })).query( async ({ctx, input})=>{
+        console.log(input.projecId)
         return await ctx.db.commits.findMany({
             where:{
                 projectId : input.projecId
             }
         })
-    })
-
+    }),
+    getUserId : protectedProcedure.query(async ({ctx,input})=>{
+        const userId =await ctx.db.user.findFirst({
+            where : {
+                email :ctx.userId.email
+            }
+        })
+        console.log(JSON.stringify(userId))
+        return 
+    })  
+    
 })

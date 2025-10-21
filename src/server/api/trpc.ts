@@ -6,8 +6,8 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { useAuth } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
+import { useAuth, useUser } from "@clerk/nextjs";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -49,6 +49,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         ...shape.data,
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
+        
       },
     };
   },
@@ -82,18 +83,35 @@ export const createTRPCRouter = t.router;
  * network latency that would occur in production but not in local development.
  */
 
-const isAuthenticated = t.middleware(async ({ctx,next})=>{
-  const user = await auth()
-  if( !user.userId){
+const isAuthenticated = t.middleware(async ({next,ctx})=>{
+  // const user = await auth()
+  const user  =  await currentUser()
+  console.log("isAuthenticated TRPC ",user?.emailAddresses[0]?.emailAddress)
+  const email = user?.emailAddresses[0]?.emailAddress
+  if( !user){
     throw new TRPCError({
       code : "UNAUTHORIZED",
       message : "You need to be log-in to access!"
     })
   }
+
+  const userId = await db.user.findFirst({
+    where:{
+      email : email
+    }
+  })
+  console.log("get details from db ---->  ",JSON.stringify(userId))
+  if(!userId){
+    throw new TRPCError({
+      code : "UNAUTHORIZED",
+      message : "this email is not found"
+    })
+  }
+
   return next({
     ctx : {
       ...ctx,
-      user
+      userId
     }
   })
 })
