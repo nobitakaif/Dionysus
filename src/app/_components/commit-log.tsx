@@ -10,7 +10,9 @@ export default function CommitLog(){
         <pre>
             {
                 JSON.stringify(commit, null , 2)
+                
             }
+            
         </pre>
     )
 }

@@ -6,7 +6,8 @@ import { db } from "~/server/db"
 export default async function SyncUser(){
     // SSR
     const { userId } = await auth()
-    console.log("rendering on server")
+    console.log("rendering on server", userId)
+    
     if(!userId){
         throw new Error("userId is not found")
     }

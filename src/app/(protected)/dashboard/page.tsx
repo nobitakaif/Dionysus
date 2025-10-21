@@ -3,6 +3,7 @@ import { ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
 import CommitLog from "~/app/_components/commit-log"
 import useProject from "~/hooks/use-project"
+import { api } from "~/trpc/react"
 // import CommitLog from "./commit-log"
 
 
@@ -10,8 +11,9 @@ import useProject from "~/hooks/use-project"
 export default function Page(){
 
     const {project} = useProject()
+    const userId = api.project.getUserId.useQuery()
     return <div>
-        {project?.id}
+        
         <div className="flex items-center justify-between flex-wrap gap-y-4">
             <div className="w-fit rounded-md bg-primary px-4 py-3">
                 <div className="flex items-center">
