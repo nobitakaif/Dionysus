@@ -27,11 +27,12 @@ export const getCommitHashes = async (githubUrl : string) : Promise<Response[]>=
         repo : repo
     })
     const sortedCommit = data.sort((a : any, b:any,)=> new Date(b.commit.author.date).getTime() - new Date(a.commit.author.date).getTime()) as any[]
+    console.log("this is sorted commit ",JSON.stringify(sortedCommit))
     return sortedCommit.slice(0, 10).map((commit : any)=>({
         commitHash : commit.sha as string,
         commitMessage : commit?.commit?.message ?? "",
         commitAuthorName : commit.commit.author.name ?? "",
-        commitAuthorAvatar : commit.author.avatarUrl ?? "",
+        commitAuthorAvatar : commit.author.avatar_url ?? "",
         commitDate : commit.commit.author.date ?? ""
     }))
 }
@@ -92,7 +93,7 @@ export const fetchProjectGithubUrl = async( projectId : string ) => {
     })
 
     if(!project?.githubUrl){
-        throw new Error("Prject has now github url! ")
+        throw new Error("Project has not github url! ")
     }
     
     return { project , githubUrl : project?.githubUrl }
@@ -121,4 +122,4 @@ export const filterUnprocessedCommits = async(projecId : string, commitHashes : 
 //     return unProcessedCommits
 // }
 
-await pollCommit('614f365d-f0e5-4970-a359-c2878e7570f6').then(console.log)
+// await pollCommit('b73a94b3-9ade-46a6-8b1c-69df5b21b42f').then(console.log)

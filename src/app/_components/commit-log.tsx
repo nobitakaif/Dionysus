@@ -9,7 +9,7 @@ import { api } from "~/trpc/react";
 export default function CommitLog(){
     const { projectId, project } = useProject()
     const { data:commits  } = api.project.getCommit.useQuery({projecId: projectId})
-    console.log("image url is ->>>>>>>",commits![0]?.commitAuthorAvatar)
+    // console.log("image url is ->>>>>>>",commits![0]?.commitAuthorAvatar)
     return (
         <ul  className="space-y-8">
             {commits?.map((commit, commitIdx)=>{
