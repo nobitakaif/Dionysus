@@ -15,7 +15,7 @@ export const projectRouter = createTRPCRouter({
                 email : ctx.userId.email
             }
         })
-
+        console.log("userid => ", userId?.email)
         console.log("inside create project", userId)
         const project = await ctx.db.project.create({
             data:{
@@ -28,6 +28,9 @@ export const projectRouter = createTRPCRouter({
                 }
             }
         })
+        console.log('project id -> ', project.name)
+
+        
         await pollCommit(project.id)
         return project
     }),

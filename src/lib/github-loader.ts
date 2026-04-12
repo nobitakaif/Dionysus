@@ -1,6 +1,7 @@
 import { GithubRepoLoader} from "@langchain/community/document_loaders/web/github"
+import type { Document } from "@langchain/core/documents"
 
-export const loadGithubbRepo =async (githubUrl: string, githubToken?: string, branch? : string)=>{
+export const loadGithubRepo =async (githubUrl: string, githubToken?: string, branch? : string)=>{
     const loader = new GithubRepoLoader(githubUrl,{
         accessToken : githubToken || '', // process.env.GITHUB_TOKEN
         branch : branch || 'master', // branch
@@ -14,4 +15,15 @@ export const loadGithubbRepo =async (githubUrl: string, githubToken?: string, br
     return docs
 }
 
-console.log(await loadGithubbRepo('https://github.com/nobitakaif/excalidraw'))
+console.log(await loadGithubRepo('https://github.com/nobitakaif/excalidraw'))
+
+const generateEmbeddings = async (docs : Document[])=>{
+    return await Promise.all(docs.map(async doc =>{
+        
+    }))
+}
+
+export const indexGithubRepo = async (projectId : string, githubUrl : string, githubToken? : string)=>{
+    const docs = await loadGithubRepo(githubUrl, githubToken)
+    const allEmbeddings = await generateEmbeddings(docs)
+}
